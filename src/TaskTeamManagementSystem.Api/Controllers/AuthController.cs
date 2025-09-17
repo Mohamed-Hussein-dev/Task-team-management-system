@@ -27,5 +27,20 @@ namespace TaskTeamManagementSystem.Api.Controllers
             }
             return BadRequest(result);
         }
+
+
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var command = new LoginUserCommand(loginDto);
+            var result = await mediator.Send(command);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
