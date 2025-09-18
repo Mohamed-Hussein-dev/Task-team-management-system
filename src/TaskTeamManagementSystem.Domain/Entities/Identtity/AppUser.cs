@@ -11,5 +11,7 @@ namespace TaskTeamManagementSystem.Domain.Entities.Identtity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<ProjectTask> Tasks { get; set; }
+        public ICollection<Project> Projects { get; set; }
     }
 }
