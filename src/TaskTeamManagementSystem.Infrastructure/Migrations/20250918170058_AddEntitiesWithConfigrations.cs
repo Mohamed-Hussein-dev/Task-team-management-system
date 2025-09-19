@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TaskTeamManagementSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProjectAndTaskEntities : Migration
+    public partial class AddEntitiesWithConfigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeaderId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LeaderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                         column: x => x.LeaderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,7 +45,7 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     ProjId = table.Column<int>(type: "int", nullable: false),
-                    AssigneeUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AssigneeUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,10 +55,34 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                         column: x => x.AssigneeUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Tasks_Projects_ProjId",
                         column: x => x.ProjId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersProjects",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersProjects", x => new { x.UserId, x.ProjectId });
+                    table.ForeignKey(
+                        name: "FK_UsersProjects_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersProjects_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -78,6 +102,11 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                 name: "IX_Tasks_ProjId",
                 table: "Tasks",
                 column: "ProjId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersProjects_ProjectId",
+                table: "UsersProjects",
+                column: "ProjectId");
         }
 
         /// <inheritdoc />
@@ -85,6 +114,9 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "UsersProjects");
 
             migrationBuilder.DropTable(
                 name: "Projects");

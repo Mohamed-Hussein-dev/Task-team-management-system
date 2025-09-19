@@ -244,7 +244,6 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LeaderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
@@ -267,7 +266,6 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssigneeUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -297,6 +295,21 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     b.HasIndex("ProjId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("UsersProjects", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("UsersProjects");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -353,10 +366,9 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
             modelBuilder.Entity("TaskTeamManagementSystem.Domain.Entities.Project", b =>
                 {
                     b.HasOne("TaskTeamManagementSystem.Domain.Entities.Identtity.AppUser", "Leader")
-                        .WithMany("Projects")
+                        .WithMany("LeadingProjects")
                         .HasForeignKey("LeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Leader");
                 });
@@ -366,8 +378,7 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     b.HasOne("TaskTeamManagementSystem.Domain.Entities.Identtity.AppUser", "AssigneeUser")
                         .WithMany("Tasks")
                         .HasForeignKey("AssigneeUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("TaskTeamManagementSystem.Domain.Entities.Project", "Project")
                         .WithMany("Tasks")
@@ -380,9 +391,24 @@ namespace TaskTeamManagementSystem.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("UsersProjects", b =>
+                {
+                    b.HasOne("TaskTeamManagementSystem.Domain.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskTeamManagementSystem.Domain.Entities.Identtity.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TaskTeamManagementSystem.Domain.Entities.Identtity.AppUser", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("LeadingProjects");
 
                     b.Navigation("Tasks");
                 });

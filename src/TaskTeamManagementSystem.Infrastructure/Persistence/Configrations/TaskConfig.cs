@@ -17,11 +17,13 @@ namespace TaskTeamManagementSystem.Infrastructure.Persistence.Configrations
 
             builder.HasOne(task => task.AssigneeUser)
                    .WithMany(user => user.Tasks)
-                   .HasForeignKey(task => task.AssigneeUserId);
+                   .HasForeignKey(task => task.AssigneeUserId)
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(task => task.Project)
                    .WithMany(project => project.Tasks)
-                   .HasForeignKey(task => task.ProjId);
+                   .HasForeignKey(task => task.ProjId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

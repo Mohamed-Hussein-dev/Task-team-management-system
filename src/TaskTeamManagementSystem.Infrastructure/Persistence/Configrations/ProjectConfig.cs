@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskTeamManagementSystem.Domain.Entities;
+using TaskTeamManagementSystem.Domain.Entities.Identtity;
 
 namespace TaskTeamManagementSystem.Infrastructure.Persistence.Configrations
 {
@@ -16,12 +17,23 @@ namespace TaskTeamManagementSystem.Infrastructure.Persistence.Configrations
             builder.HasKey(project => project.Id);
 
             builder.HasOne(project => project.Leader)
-                   .WithMany(leader => leader.Projects)
-                   .HasForeignKey(project => project.LeaderId);
+                   .WithMany(leader => leader.LeadingProjects)
+                   .HasForeignKey(project => project.LeaderId)
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(project => project.Tasks)
                    .WithOne(task => task.Project)
-                   .HasForeignKey(task => task.ProjId);
+                   .HasForeignKey(task => task.ProjId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(project => project.Memebers)
+                   .WithMany(member => member.ProjectMemberships)
+                   .UsingEntity<Dictionary<string, object>>(
+                    "UsersProjects",
+                    j => j.HasOne<AppUser>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade),
+                    j => j.HasOne<Project>().WithMany().HasForeignKey("ProjectId").OnDelete(DeleteBehavior.Cascade),
+                    j =>{j.HasKey("UserId", "ProjectId"); }
+                    );
         }
     }
 }

@@ -12,8 +12,9 @@ namespace TaskTeamManagementSystem.Domain.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string LeaderId { get; set; }
-        public AppUser Leader { get; set; }
+        public string? LeaderId { get; set; }
+        public AppUser? Leader { get; set; }
+        public ICollection<AppUser> Memebers { get; set; }
         public ICollection<ProjectTask> Tasks { get; set; }
     }
 }
