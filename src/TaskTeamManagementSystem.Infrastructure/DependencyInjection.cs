@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
-using TaskTeamManagementSystem.Domain.Entities.Identtity;
-using TaskTeamManagementSystem.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TaskTeamManagementSystem.Application.Features.Auth.Interfaces;
+using TaskTeamManagementSystem.Application.Interfaces;
+using TaskTeamManagementSystem.Application.Interfaces.Repositories;
+using TaskTeamManagementSystem.Domain.Entities.Identtity;
 using TaskTeamManagementSystem.Infrastructure.Identity;
+using TaskTeamManagementSystem.Infrastructure.Persistence;
+using TaskTeamManagementSystem.Infrastructure.Persistence.Repositories;
 
 namespace TaskTeamManagementSystem.Infrastructure
 {
@@ -55,6 +58,18 @@ namespace TaskTeamManagementSystem.Infrastructure
 
             #region Jwt Generator Register
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            #endregion
+
+            #region ADD Uint of work
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+            #endregion
+
+            #region ADD Project Repo
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            #endregion
+
+            #region ADD Task Repo
+            services.AddScoped<ITaskRepository, TaskRepository>();
             #endregion
 
             return services;
