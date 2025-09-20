@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using TaskTeamManagementSystem.Api.Helper;
+using TaskTeamManagementSystem.Api.Policies;
 using TaskTeamManagementSystem.Application;
 using TaskTeamManagementSystem.Infrastructure;
 
@@ -11,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddPolicies();
 
 builder.Services.AddApplication().AddInfrastructure(builder.Configuration);
 
