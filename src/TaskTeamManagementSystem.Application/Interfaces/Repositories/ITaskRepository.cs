@@ -7,7 +7,7 @@ using TaskTeamManagementSystem.Domain.Entities;
 
 namespace TaskTeamManagementSystem.Application.Interfaces.Repositories
 {
-    public interface ITaskRepository
+    public interface ITaskRepository : IGenericRepository<ProjectTask , int>
     {
     }
 }
