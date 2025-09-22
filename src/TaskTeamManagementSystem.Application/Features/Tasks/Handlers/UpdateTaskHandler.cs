@@ -26,6 +26,10 @@ namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
             {
                 return BaseResponse<bool>.Fail("There is Not Such Task");
             }
+            if(task.ProjId != request.Dto.ProjectId)
+            {
+                return BaseResponse<bool>.Fail("Can't update Taske Dose not Belong to another project");
+            }
             task.Title = request.Dto.Title ?? task.Title;
             task.Description = request.Dto.Description ?? task.Description;
             task.Status = getType(request.Dto.Status) ?? task.Status;
