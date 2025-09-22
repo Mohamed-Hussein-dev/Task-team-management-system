@@ -1,12 +1,9 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TaskTeamManagementSystem.Application.Features.Common.Responses;
 using TaskTeamManagementSystem.Application.Features.Tasks.Commands;
 using TaskTeamManagementSystem.Application.Features.Tasks.DTOs;
+using TaskTeamManagementSystem.Application.Features.Tasks.Helper;
 using TaskTeamManagementSystem.Application.Interfaces;
 using TaskTeamManagementSystem.Domain.Entities;
 
@@ -43,7 +40,7 @@ namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
                 TaskId = task.Id,
                 Title = request.Dto.Title,
                 Description = request.Dto.Description,
-                Type = getType(request.Dto.Type),
+                Type = Utility.getType(request.Dto.Type),
                 ProjectId = request.Dto.projectId                
 
             };
@@ -51,15 +48,6 @@ namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
 
         }
 
-        string getType(int type)
-        {
-            return type switch
-            {
-                0 => "Task",
-                1 => "Bug",
-                2 => "Feature"
-            };
-            // 0 - Task , 1 - Bug , 2 - Feature 
-        }
+        
     }
 }

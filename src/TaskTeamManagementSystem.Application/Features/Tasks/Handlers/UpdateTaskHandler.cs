@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskTeamManagementSystem.Application.Features.Common.Responses;
 using TaskTeamManagementSystem.Application.Features.Tasks.Commands;
+using TaskTeamManagementSystem.Application.Features.Tasks.Helper;
 using TaskTeamManagementSystem.Application.Interfaces;
 
 namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
@@ -32,8 +33,8 @@ namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
             }
             task.Title = request.Dto.Title ?? task.Title;
             task.Description = request.Dto.Description ?? task.Description;
-            task.Status = getType(request.Dto.Status) ?? task.Status;
-            task.Type = getStatus(request.Dto.Type) ?? task.Type;
+            task.Status = Utility.getStatus(request.Dto.Status) ?? task.Status;
+            task.Type = Utility.getType(request.Dto.Type) ?? task.Type;
 
             unitOfWork.Tasks.Update(task);
 
@@ -46,29 +47,6 @@ namespace TaskTeamManagementSystem.Application.Features.Tasks.Handlers
             return BaseResponse<bool>.Ok(true, "Update Task Sucssefuly");
 
         }
-        int? getStatus(string type)
-        {
-            // 0 - NotStarted , 1 - InProgress , 2 - Done
-            return type switch
-            { 
-                "NotStarted" => 0,
-                "InProgress" => 1,
-                "Done" => 2,
-                _ => null
-            
-            };
-        }
-        int? getType(string type)
-        {
-            return type switch
-            {
-                "Task" => 0,
-                "Bug" => 1,
-                "Feature" => 2,
-                _ => null
-            };
-            // 0 - Task , 1 - Bug , 2 - Feature 
-
-        }
+       
     }
 }
