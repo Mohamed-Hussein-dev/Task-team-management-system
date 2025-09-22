@@ -28,7 +28,7 @@ namespace TaskTeamManagementSystem.Application.Features.Projects.Commands
                 LeaderId = request.LeaderId
             };
 
-            unitOfWork.Projects.AddAsync(project);
+            await unitOfWork.Projects.AddAsync(project);
 
             var AddProjectRes = await unitOfWork.CommitChangesAsync();
 

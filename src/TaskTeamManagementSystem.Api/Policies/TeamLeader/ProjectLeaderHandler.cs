@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using TaskTeamManagementSystem.Application.Features.Tasks.DTOs;
 using TaskTeamManagementSystem.Infrastructure.Persistence;
 
 namespace TaskTeamManagementSystem.Api.Policies.TeamLeader
@@ -14,28 +16,22 @@ namespace TaskTeamManagementSystem.Api.Policies.TeamLeader
             this.httpContextAccessor = httpContextAccessor;
             this.dbContext = dbContext;
         }
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ProjectLeaderRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ProjectLeaderRequirement requirement)
         {
             var UserId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (UserId == null)
-                return Task.CompletedTask;
+                return;
 
-            var routeValues = httpContextAccessor.HttpContext?.Request.RouteValues;
-
-            if(routeValues == null || !routeValues.ContainsKey("projectId"))
-                return Task.CompletedTask;
-
-            var projectId = int.Parse(routeValues["projectId"].ToString());
-
-            /*
-             var isLeader = await dbContext.Projects.AnyAsync(p => p.Id == projectId && p.TeamLeaderId == userId);
-
-            if (isLeader)
+            var routeData = httpContextAccessor.HttpContext?.Request.RouteValues;
+            if (routeData?["projectId"] is string projectIdString && int.TryParse(projectIdString, out var projectId))
             {
-                context.Succeed(requirement);
+                var isLeader = await dbContext.Projects.AnyAsync(p => p.Id == projectId && p.LeaderId == UserId);
+                if (isLeader)
+                {
+                    context.Succeed(requirement);
+                }
             }
-            */
-            return Task.CompletedTask;
+ 
         }
     }
 }
