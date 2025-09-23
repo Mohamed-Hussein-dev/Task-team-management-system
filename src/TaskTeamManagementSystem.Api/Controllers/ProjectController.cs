@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using TaskTeamManagementSystem.Api.Helper;
 using TaskTeamManagementSystem.Application.Features.Projects.Commands;
-using TaskTeamManagementSystem.Application.Features.Projects.Commands.DTOs;
+using TaskTeamManagementSystem.Application.Features.Projects.DTOs;
 using TaskTeamManagementSystem.Application.Features.Tasks.Queries;
 
 namespace TaskTeamManagementSystem.Api.Controllers
