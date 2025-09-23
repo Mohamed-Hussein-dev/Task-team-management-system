@@ -9,14 +9,12 @@ using TaskTeamManagementSystem.Application.Features.Projects.DTOs;
 
 namespace TaskTeamManagementSystem.Application.Features.Projects.Commands
 {
-    public class CreateProjectCommand : IRequest<BaseResponse<ProjectDto>>
+    public class UpdateProjectCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateProjectDto Dto { get; set; }
-        public string LeaderId { get; set; }
-        public CreateProjectCommand(CreateProjectDto dto , string leaderId)
+        public UpdateProjectDto Dto { get; set; }
+        public UpdateProjectCommand(UpdateProjectDto dot)
         {
-            Dto = dto;
-            LeaderId = leaderId;
+            Dto = dot;
         }
     }
 }

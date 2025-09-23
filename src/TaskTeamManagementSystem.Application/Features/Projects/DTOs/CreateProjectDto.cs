@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTeamManagementSystem.Application.Features.Projects.Commands.DTOs
+namespace TaskTeamManagementSystem.Application.Features.Projects.DTOs
 {
     public class CreateProjectDto
     {
