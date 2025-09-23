@@ -92,10 +92,10 @@ TaskTeamManagementSystem/
 - `DELETE /api/projects/{id}` → Delete project
 
 ### Tasks
-- `POST /api/tasks` → Create task in a project
+- `POST /api/tasks/{projectId}` → Create task in a project
 - `GET /api/tasks/{id}` → Get task details
-- `PUT /api/tasks/{id}` → Update task
-- `DELETE /api/tasks/{id}` → Delete task
+- `PUT /api/tasks/{projectId}/{id}` → Update task
+- `DELETE /api/tasks/{projectId}/{id}` → Delete task
 
 ---
 ## 🏷️ Versioning
