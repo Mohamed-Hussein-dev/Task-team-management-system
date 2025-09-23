@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskTeamManagementSystem.Application.Features.Common.Responses;
-using TaskTeamManagementSystem.Application.Features.Projects.Commands.DTOs;
+using TaskTeamManagementSystem.Application.Features.Projects.DTOs;
 using TaskTeamManagementSystem.Application.Interfaces;
 using TaskTeamManagementSystem.Domain.Entities;
 
@@ -41,6 +41,7 @@ namespace TaskTeamManagementSystem.Application.Features.Projects.Commands
                 ProjId = project.Id,
                 Title = request.Dto.Title,
                 Description = request.Dto.Description,
+                CreatedAt = project.CreatedAt,
                 LeaderId = project.LeaderId
             };
             return BaseResponse<ProjectDto>.Ok(projectDto , "Project Created Successfully");
